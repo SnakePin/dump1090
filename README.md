@@ -61,6 +61,27 @@ libhackrf.
 ``make LIMESDR=no`` will disable LimeSDR support and remove the dependency on
 libLimeSuite.
 
+## Building on MSYS2
+1. Install PothosSDR to `C:\PothosSDR\` and install MSYS2.
+> The PothosSDR path can't have spaces in it because the MinGW gcc
+doesn't recognize Windows style paths with escaped spaces in them
+which is what the pkg-config returns.
+2. Remove the following headers `pthread.h, semaphore.h, sched.h` from `<PothosSDR root>/include`.
+> MSYS2 already has these POSIX headers and we need the compiler to use the default headers.
+
+#### Building with MinGW-w64
+```
+$ pacman -S mingw-w64-x86_64-toolchain mingw-w64-x86_64-ncurses mingw-w64-x86_64-libsystre mingw-w64-x86_64-libusb
+$ alias make=mingw32-make
+$ PKG_CONFIG_PATH="/c/PothosSDR/lib/pkgconfig:$PKG_CONFIG_PATH" make -j$(nproc)
+```
+#### Building with Clang
+```
+$ pacman -S mingw-w64-clang-x86_64-toolchain mingw-w64-clang-x86_64-ncurses mingw-w64-clang-x86_64-libsystre mingw-w64-clang-x86_64-libusb
+$ alias make=mingw32-make
+$ PKG_CONFIG_PATH="/c/PothosSDR/lib/pkgconfig:$PKG_CONFIG_PATH" make -j$(nproc)
+```
+
 ## Building on OSX
 
 Minimal testing on Mojave 10.14.6, YMMV.
